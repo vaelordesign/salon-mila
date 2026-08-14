@@ -1,0 +1,448 @@
+/* =========================================================================
+   Salon Mila — démo Vaelor Design
+   ========================================================================= */
+
+:root{
+  --terracotta: #C97456;
+  --terracotta-fonce: #8F4E36;
+  --rose: #D99B84;
+  --sable: #FAF3EB;
+  --sable-fonce: #F0E4D6;
+  --anthracite: #2E2724;
+  --anthracite-doux: #5E534C;
+  --blanc: #FFFFFF;
+
+  --police-titre: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --police-texte: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  --rayon: 14px;
+  --ombre: 0 10px 30px rgba(46,39,36,0.1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  font-family: var(--police-texte);
+  background: var(--sable);
+  color: var(--anthracite);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+img, svg{ max-width: 100%; display: block; }
+
+a{ color: inherit; }
+
+.skip{
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--terracotta);
+  color: var(--blanc);
+  padding: 10px 16px;
+  z-index: 3000;
+}
+.skip:focus{ left: 10px; top: 10px; }
+
+.conteneur{
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+h1, h2, h3{
+  font-family: var(--police-titre);
+  color: var(--terracotta-fonce);
+  line-height: 1.15;
+  margin: 0 0 14px;
+}
+
+h2{ font-size: clamp(1.7rem, 4vw, 2.4rem); }
+h3{ font-size: 1.15rem; margin-bottom: 8px; }
+
+p{ margin: 0 0 12px; }
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 100px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.98rem;
+  white-space: normal;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:hover{ transform: translateY(-2px); }
+
+.btn-principal{
+  background: var(--terracotta);
+  color: var(--blanc);
+  box-shadow: var(--ombre);
+}
+.btn-principal:hover{ background: #B4623F; }
+
+.btn-secondaire{
+  background: transparent;
+  border-color: var(--sable);
+  color: var(--sable);
+}
+.btn-secondaire:hover{ background: rgba(250,243,235,0.14); }
+
+.btn-large{ width: 100%; margin-top: 8px; }
+
+/* ---------- En-tête ---------- */
+
+.entete{
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: var(--sable);
+  border-bottom: 1px solid var(--sable-fonce);
+}
+
+.entete-conteneur{
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.marque{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.marque-icone{ width: 40px; height: 40px; flex-shrink: 0; }
+
+.marque-nom{
+  font-family: var(--police-titre);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--terracotta-fonce);
+  line-height: 1.15;
+}
+
+.nav-desktop{
+  display: flex;
+  gap: 26px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.nav-desktop a{ text-decoration: none; color: var(--anthracite); }
+.nav-desktop a:hover{ color: var(--terracotta-fonce); }
+
+.entete-actions{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-tel{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--terracotta-fonce);
+  color: var(--sable);
+  padding: 10px 16px;
+  border-radius: 100px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.btn-tel:hover{ background: #713C29; }
+
+.btn-menu{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--sable-fonce);
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.btn-menu span{
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin-inline: auto;
+  background: var(--anthracite);
+  transition: transform .2s ease, opacity .2s ease;
+}
+.btn-menu[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.btn-menu[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
+.btn-menu[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile{
+  display: none;
+  flex-direction: column;
+  border-top: 1px solid var(--sable-fonce);
+  background: var(--sable);
+}
+.nav-mobile.ouvert{ display: flex; }
+.nav-mobile a{
+  padding: 14px 20px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--anthracite);
+  border-bottom: 1px solid var(--sable-fonce);
+}
+.nav-mobile-tel{ color: var(--terracotta-fonce) !important; }
+
+/* ---------- Hero ---------- */
+
+.hero{
+  position: relative;
+  color: var(--sable);
+  overflow: hidden;
+}
+
+.hero-fond{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-fond svg{ width: 100%; height: 100%; }
+
+.hero-contenu{
+  position: relative;
+  z-index: 1;
+  max-width: 740px;
+  margin-inline: auto;
+  padding: 84px 24px 96px;
+  text-align: center;
+}
+
+.hero-etiquette{
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--rose);
+  margin-bottom: 14px;
+}
+
+.hero h1{
+  color: var(--sable);
+  font-size: clamp(2rem, 5.2vw, 2.9rem);
+  margin-bottom: 18px;
+}
+
+.hero-texte{
+  font-size: 1.08rem;
+  color: rgba(250,243,235,0.92);
+  max-width: 58ch;
+  margin-inline: auto;
+  margin-bottom: 30px;
+}
+
+.hero-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ---------- Sections génériques ---------- */
+
+.section{ padding: 72px 0; }
+.section-alt{ background: var(--sable-fonce); }
+
+.section-etiquette{
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--terracotta);
+  margin-bottom: 10px;
+}
+
+.section-intro{
+  max-width: 62ch;
+  color: var(--anthracite-doux);
+  font-size: 1.05rem;
+}
+
+/* ---------- Services ---------- */
+
+.grille-services{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+  margin-top: 36px;
+}
+
+.carte-service{
+  background: var(--blanc);
+  border-radius: var(--rayon);
+  padding: 26px 22px;
+  box-shadow: var(--ombre);
+}
+
+.service-icone{ width: 44px; height: 44px; margin-bottom: 16px; }
+
+.carte-service p{ color: var(--anthracite-doux); margin-bottom: 0; font-size: 0.96rem; }
+
+/* ---------- Avis / confiance ---------- */
+
+.confiance-grille{
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.citation{
+  margin: 20px 0 0;
+  padding: 22px 24px;
+  background: var(--blanc);
+  border-left: 4px solid var(--terracotta);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre);
+  font-family: var(--police-titre);
+  font-size: 1.08rem;
+  font-style: italic;
+  color: var(--terracotta-fonce);
+}
+.citation span{
+  display: block;
+  margin-top: 12px;
+  font-family: var(--police-texte);
+  font-style: normal;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--anthracite-doux);
+}
+
+.confiance-badges{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.badge{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--blanc);
+  border: 1px solid var(--sable-fonce);
+  border-radius: var(--rayon);
+  padding: 16px 18px;
+  font-weight: 600;
+  font-size: 0.96rem;
+  box-shadow: var(--ombre);
+}
+.badge svg{ width: 36px; height: 36px; flex-shrink: 0; }
+
+/* ---------- Horaires ---------- */
+
+.grille-horaires{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 36px;
+  align-items: start;
+}
+
+.bloc-info h3{ margin-top: 22px; }
+.bloc-info h3:first-child{ margin-top: 0; }
+
+.liste-coord{
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.liste-coord li{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  color: var(--anthracite-doux);
+}
+.liste-coord svg{ color: var(--terracotta-fonce); flex-shrink: 0; }
+.liste-coord a{ text-decoration: none; color: var(--anthracite-doux); font-weight: 600; }
+.liste-coord a:hover{ color: var(--terracotta-fonce); }
+
+.bloc-carte{
+  border-radius: var(--rayon);
+  overflow: hidden;
+  box-shadow: var(--ombre);
+  min-height: 320px;
+}
+.bloc-carte iframe{
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+  display: block;
+}
+
+/* ---------- Pied ---------- */
+
+.pied{
+  background: var(--anthracite);
+  color: var(--sable);
+  padding: 40px 0;
+}
+.pied-conteneur{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+}
+.pied-marque .marque-nom{ color: var(--sable); font-size: 1.15rem; }
+.pied-marque p{ color: rgba(250,243,235,0.7); margin-top: 4px; margin-bottom: 0; font-size: 0.9rem; }
+.pied-coord p{ margin: 0 0 6px; color: rgba(250,243,235,0.85); font-size: 0.92rem; text-align: right; }
+.pied-coord a{ text-decoration: none; color: var(--sable); }
+.pied-coord a:hover{ text-decoration: underline; }
+
+/* =========================================================================
+   Responsive
+   ========================================================================= */
+
+@media (max-width: 900px){
+  .grille-horaires{ grid-template-columns: 1fr; }
+  .confiance-grille{ grid-template-columns: 1fr; }
+  .bloc-carte{ min-height: 280px; }
+  .bloc-carte iframe{ min-height: 280px; }
+}
+
+@media (max-width: 767px){
+  .nav-desktop{ display: none; }
+  .btn-menu{ display: flex; }
+  .btn-tel span{ display: none; }
+  .btn-tel{ padding: 10px 12px; }
+
+  .hero-contenu{ padding: 56px 20px 64px; }
+  .hero-actions{ flex-direction: column; }
+  .hero-actions .btn{ width: 100%; }
+
+  .section{ padding: 52px 0; }
+
+  .pied-conteneur{ flex-direction: column; }
+  .pied-coord p{ text-align: left; }
+}
+
+@media (max-width: 420px){
+  .marque-nom{ font-size: 0.95rem; }
+  .marque-icone{ width: 34px; height: 34px; }
+}
