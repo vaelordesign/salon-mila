@@ -64,12 +64,10 @@
 
   <section class="hero">
     <div class="hero-fond" aria-hidden="true">
-      <svg viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice">
-        <rect width="1200" height="500" fill="var(--terracotta-fonce)"/>
-        <circle cx="1020" cy="100" r="220" fill="var(--terracotta)" opacity="0.3"/>
-        <circle cx="120" cy="440" r="200" fill="var(--terracotta)" opacity="0.25"/>
-        <path d="M0 380 Q300 320 600 380 T1200 360 V500 H0 Z" fill="var(--rose)" opacity="0.18"/>
-      </svg>
+      <!-- MARQUE-PHOTO-HEROS -->
+      <img class="v3-photo" src="images/heros.jpg" alt="Une chaise du salon, devant le miroir" fetchpriority="high">
+      <div class="hero-voile"></div>
+      <div data-vfond='{"motif":"aurore","couleur":"#C97456","couleur2":"#D99B84","opacite":0.34,"dessous":false}'></div>
     </div>
     <div class="hero-contenu">
       <p class="hero-etiquette">Salon familial depuis 1987 · Notre-Dame-de-Grâce, Montréal</p>
@@ -256,5 +254,6 @@
 </script>
 <script src="protection-demo.js"></script>
 <script src="js/script.js"></script>
+<script src="fond-anime.js"></script>
 </body>
 </html>
