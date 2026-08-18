@@ -14,7 +14,7 @@ Depuis 1987 dans NDG, tout juste rénové par Toni, et 4,7 étoiles sur 46 avis 
 
 Je vous ai construit un site pour ça :
 
-https://charlesmartel2506.github.io/salon-mila/
+https://vaelordesign.github.io/salon-mila/
 
 Deux minutes à regarder. Gratuit, aucune obligation.
 
