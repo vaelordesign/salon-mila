@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Semaine à deux fronts</title>
+<meta name="description" content="Horaire hebdomadaire construit à partir de l'horaire de cégep : blocs d'étude et blocs d'entreprise placés là où ils rapportent le plus.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+:root{
+  --papier:#F3F3EF;
+  --carte:#FCFCFA;
+  --encre:#171A21;
+  --encre-2:#4E5462;
+  --encre-3:#7C8494;
+  --trait:#DBDBD4;
+  --trait-fort:#C3C3BA;
+
+  --ecole:#2A4A7F;
+  --ecole-fond:#E3E9F3;
+  --ecole-texte:#22406F;
+
+  --biz:#95610F;
+  --biz-fond:#F3E7D0;
+  --biz-texte:#7C4F08;
+
+  --perso:#6B5B7B;
+  --perso-fond:#EDE8F0;
+  --perso-texte:#5B4C6B;
+
+  --rh:34px;
+  --f-titre:"Instrument Serif",Georgia,serif;
+  --f-texte:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --papier:#13151A;
+    --carte:#1A1D24;
+    --encre:#EDEEEA;
+    --encre-2:#A3AAB8;
+    --encre-3:#79808E;
+    --trait:#2B303A;
+    --trait-fort:#3A414D;
+
+    --ecole:#8DB1E8;
+    --ecole-fond:#1C2739;
+    --ecole-texte:#A9C5F0;
+
+    --biz:#DFA847;
+    --biz-fond:#2E2413;
+    --biz-texte:#EBBB63;
+
+    --perso:#B79ECB;
+    --perso-fond:#26202D;
+    --perso-texte:#C4AFD5;
+  }
+}
+:root[data-theme="dark"]{
+  --papier:#13151A;
+  --carte:#1A1D24;
+  --encre:#EDEEEA;
+  --encre-2:#A3AAB8;
+  --encre-3:#79808E;
+  --trait:#2B303A;
+  --trait-fort:#3A414D;
+
+  --ecole:#8DB1E8;
+  --ecole-fond:#1C2739;
+  --ecole-texte:#A9C5F0;
+
+  --biz:#DFA847;
+  --biz-fond:#2E2413;
+  --biz-texte:#EBBB63;
+
+  --perso:#B79ECB;
+  --perso-fond:#26202D;
+  --perso-texte:#C4AFD5;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--papier);
+  color:var(--encre);
+  font-family:var(--f-texte);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.enveloppe{max-width:1180px;margin-inline:auto;padding:44px 20px 72px}
+:where(a):focus-visible,:where(button):focus-visible{outline:2px solid var(--biz);outline-offset:2px}
+
+/* ---------- masthead ---------- */
+.masthead{border-bottom:1px solid var(--trait-fort);padding-bottom:26px;margin-bottom:26px}
+.surtitre{
+  font-family:var(--f-data);font-size:11px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--encre-3);
+}
+h1{
+  font-family:var(--f-titre);font-weight:400;
+  font-size:clamp(42px,7.5vw,74px);line-height:.98;letter-spacing:-.01em;
+  margin:12px 0 0;text-wrap:balance;
+}
+h1 em{font-style:italic;color:var(--biz)}
+.deck{max-width:60ch;margin-top:16px;color:var(--encre-2);font-size:16px}
+
+.compteurs{
+  display:flex;flex-wrap:wrap;gap:0;margin-top:26px;
+  border:1px solid var(--trait);background:var(--carte);
+}
+.compteur{
+  flex:1 1 150px;padding:13px 16px;border-right:1px solid var(--trait);
+}
+.compteur:last-child{border-right:0}
+.compteur .n{
+  font-family:var(--f-data);font-size:22px;font-weight:600;
+  font-variant-numeric:tabular-nums;display:block;line-height:1.2;
+}
+.compteur .l{
+  font-family:var(--f-data);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--encre-3);
+}
+.compteur.e .n{color:var(--ecole-texte)}
+.compteur.b .n{color:var(--biz-texte)}
+
+/* ---------- titres de section ---------- */
+h2{
+  font-family:var(--f-titre);font-weight:400;font-size:30px;line-height:1.1;
+  margin:0 0 4px;letter-spacing:-.005em;
+}
+.section{margin-top:48px}
+.section-intro{color:var(--encre-2);max-width:62ch;font-size:14.5px;margin-bottom:18px}
+
+/* ---------- légende ---------- */
+.legende{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.cle{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--f-data);font-size:11px;letter-spacing:.04em;
+  color:var(--encre-2);padding:5px 10px 5px 6px;
+  border:1px solid var(--trait);background:var(--carte);
+}
+.pastille{width:16px;height:16px;flex:none}
+.pastille.cours{background:var(--ecole-fond);border:1px solid var(--ecole)}
+.pastille.protege{background:var(--biz-fond);border:1px solid var(--biz)}
+.pastille.etude{background:transparent;border:1px dashed var(--ecole)}
+.pastille.admin{background:transparent;border:1px dashed var(--biz)}
+.pastille.perso{background:var(--perso-fond);border:1px dotted var(--perso)}
+
+/* ---------- grille ---------- */
+.defile{overflow-x:auto;padding-bottom:6px}
+.semaine{display:flex;gap:6px;min-width:960px}
+.col{flex:1 1 0;min-width:162px}
+.col.rail{flex:0 0 52px;min-width:52px}
+.tete{
+  font-family:var(--f-data);font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:0 0 8px 2px;color:var(--encre);
+  border-bottom:2px solid var(--encre);margin-bottom:8px;
+}
+.rail .tete{border-bottom-color:transparent}
+.piste{
+  display:grid;grid-template-rows:repeat(26,var(--rh));
+  background-image:repeating-linear-gradient(to bottom,var(--trait) 0 1px,transparent 1px calc(var(--rh) * 2));
+}
+.rail .piste{background-image:none}
+.hr{
+  font-family:var(--f-data);font-size:10.5px;color:var(--encre-3);
+  font-variant-numeric:tabular-nums;text-align:right;
+  padding-right:8px;transform:translateY(-6px);
+}
+
+.bloc{
+  margin:0 1px 2px 1px;padding:5px 7px;overflow:hidden;
+  display:flex;flex-direction:column;gap:1px;
+}
+.bloc .h{
+  font-family:var(--f-data);font-size:9.5px;font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;opacity:.78;
+}
+.bloc .t{font-size:12.5px;font-weight:600;line-height:1.22;letter-spacing:-.005em}
+.bloc .m{
+  font-family:var(--f-data);font-size:9.5px;line-height:1.3;
+  opacity:.72;margin-top:auto;
+}
+.bloc.court{padding:3px 7px}
+.bloc.court .t{font-size:11px;font-weight:500}
+.bloc.court .m{display:none}
+
+.bloc.cours{background:var(--ecole-fond);border:1px solid var(--ecole);color:var(--ecole-texte)}
+.bloc.protege{background:var(--biz-fond);border:1px solid var(--biz);color:var(--biz-texte)}
+.bloc.etude{background:var(--carte);border:1px dashed var(--ecole);color:var(--ecole-texte)}
+.bloc.admin{background:var(--carte);border:1px dashed var(--biz);color:var(--biz-texte)}
+.bloc.perso{background:var(--perso-fond);border:1px dotted var(--perso);color:var(--perso-texte)}
+
+.note-jour{
+  font-family:var(--f-data);font-size:10px;line-height:1.45;
+  color:var(--encre-3);padding:8px 2px 0;border-top:1px solid var(--trait);margin-top:8px;
+}
+
+/* ---------- fin de semaine ---------- */
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.carte{background:var(--carte);border:1px solid var(--trait);padding:18px 20px}
+.carte h3{
+  font-family:var(--f-data);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--encre-3);margin-bottom:10px;
+}
+.carte .quand{
+  font-family:var(--f-data);font-size:13px;font-weight:600;
+  font-variant-numeric:tabular-nums;display:block;
+}
+.carte.sam .quand{color:var(--biz-texte)}
+.carte.dim .quand{color:var(--ecole-texte)}
+.carte p{font-size:14px;color:var(--encre-2);margin-top:6px}
+.carte .libre{
+  margin-top:14px;padding-top:12px;border-top:1px dashed var(--trait-fort);
+  font-size:13.5px;color:var(--encre-2);
+}
+
+/* ---------- raisonnement ---------- */
+.pourquoi{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--trait);border:1px solid var(--trait)}
+.pourquoi > div{background:var(--carte);padding:16px 18px}
+.pourquoi h3{
+  font-family:var(--f-data);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;margin-bottom:7px;
+}
+.pourquoi p{font-size:13.5px;color:var(--encre-2);line-height:1.55}
+
+/* ---------- règles ---------- */
+.regles{list-style:none;display:grid;gap:1px;background:var(--trait);border:1px solid var(--trait)}
+.regles li{background:var(--carte);padding:14px 18px;font-size:14px;color:var(--encre-2)}
+.regles b{color:var(--encre);font-weight:600}
+
+.pied{
+  margin-top:44px;padding-top:16px;border-top:1px solid var(--trait);
+  font-family:var(--f-data);font-size:11px;line-height:1.6;color:var(--encre-3);max-width:70ch;
+}
+
+@media (max-width:880px){
+  .defile{overflow-x:visible}
+  .semaine{flex-direction:column;min-width:0;gap:22px}
+  .col.rail{display:none}
+  .col{min-width:0}
+  .piste{display:flex;flex-direction:column;gap:5px;background-image:none}
+  .bloc{margin:0;min-height:0;padding:8px 10px}
+  .bloc.court{padding:8px 10px}
+  .bloc.court .t{font-size:12.5px;font-weight:600}
+  .bloc .t{font-size:14px}
+  .bloc .h,.bloc .m{font-size:11px}
+  .bloc.court .m{display:block}
+  .tete{font-size:12px}
+}
+
+@media print{
+  body{background:#fff;color:#000}
+  .enveloppe{padding:0}
+  .defile{overflow:visible}
+  .semaine{min-width:0}
+  .pourquoi,.regles,.duo{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="enveloppe">
+
+  <header class="masthead">
+    <p class="surtitre">Horaire opérationnel · session en cours</p>
+    <h1>Semaine à <em>deux fronts</em></h1>
+    <p class="deck">Ton horaire de cégep est déjà coulé dans le béton. Ce qui reste — les trous, les soirs, le vendredi après-midi — c'est le seul matériau que tu contrôles. Voici où le placer pour que l'école avance et que l'entreprise avance, sans que l'une paie pour l'autre.</p>
+
+    <div class="compteurs">
+      <div class="compteur"><span class="n">24,5 h</span><span class="l">Cours + volley</span></div>
+      <div class="compteur e"><span class="n">12,5 h</span><span class="l">Étude &amp; travaux</span></div>
+      <div class="compteur b"><span class="n">15,5 h</span><span class="l">Entreprise</span></div>
+      <div class="compteur"><span class="n">52,5 h</span><span class="l">Total engagé</span></div>
+      <div class="compteur"><span class="n">3 soirs</span><span class="l">+ samedi PM libres</span></div>
+    </div>
+  </header>
+
+  <section class="section" style="margin-top:34px">
+    <h2>La semaine</h2>
+    <p class="section-intro">La couleur dit le domaine : <b>bleu = école</b>, <b>laiton = entreprise</b>, <b>prune = repas, trajet, récupération</b>. Le contour dit le statut : <b>plein</b> = imposé ou intouchable, <b>pointillé</b> = tu peux le déplacer si la semaine dérape.</p>
+
+    <div class="legende">
+      <span class="cle"><span class="pastille cours"></span>Cours au cégep</span>
+      <span class="cle"><span class="pastille protege"></span>Bloc entreprise protégé</span>
+      <span class="cle"><span class="pastille etude"></span>Étude &amp; travaux</span>
+      <span class="cle"><span class="pastille admin"></span>Admin &amp; suivi clients</span>
+      <span class="cle"><span class="pastille perso"></span>Repas · trajet · récup</span>
+    </div>
+
+    <div class="defile">
+      <div class="semaine">
+
+        <div class="col rail">
+          <div class="tete">h</div>
+          <div class="piste">
+            <span class="hr" style="grid-row:1/span 2">08:00</span>
+            <span class="hr" style="grid-row:3/span 2">09:00</span>
+            <span class="hr" style="grid-row:5/span 2">10:00</span>
+            <span class="hr" style="grid-row:7/span 2">11:00</span>
+            <span class="hr" style="grid-row:9/span 2">12:00</span>
+            <span class="hr" style="grid-row:11/span 2">13:00</span>
+            <span class="hr" style="grid-row:13/span 2">14:00</span>
+            <span class="hr" style="grid-row:15/span 2">15:00</span>
+            <span class="hr" style="grid-row:17/span 2">16:00</span>
+            <span class="hr" style="grid-row:19/span 2">17:00</span>
+            <span class="hr" style="grid-row:21/span 2">18:00</span>
+            <span class="hr" style="grid-row:23/span 2">19:00</span>
+            <span class="hr" style="grid-row:25/span 2">20:00</span>
+          </div>
+        </div>
+
+        <!-- LUNDI -->
+        <div class="col">
+          <div class="tete">Lundi</div>
+          <div class="piste">
+            <div class="bloc cours" style="grid-row:1/span 4">
+              <span class="h">08:00 – 10:00</span>
+              <span class="t">Écriture et littérature</span>
+              <span class="m">601-101-MQ · A-402</span>
+            </div>
+            <div class="bloc cours" style="grid-row:5/span 4">
+              <span class="h">10:00 – 12:00</span>
+              <span class="t">Histoire du monde</span>
+              <span class="m">330-HXV-AG · B-330</span>
+            </div>
+            <div class="bloc etude" style="grid-row:9/span 3">
+              <span class="h">12:00 – 13:30</span>
+              <span class="t">Dîner + lecture Histoire / Philo</span>
+              <span class="m">45 min de lecture, pas plus</span>
+            </div>
+            <div class="bloc cours" style="grid-row:12/span 4">
+              <span class="h">13:30 – 15:30</span>
+              <span class="t">Analyse quantitative</span>
+              <span class="m">360-223-RE · B-402</span>
+            </div>
+            <div class="bloc etude court" style="grid-row:16/span 1">
+              <span class="h">15:30 – 16:00</span>
+              <span class="t">Notes à chaud — Analyse quanti</span>
+            </div>
+            <div class="bloc cours" style="grid-row:17/span 3">
+              <span class="h">16:00 – 17:30</span>
+              <span class="t">Philosophie et rationalité</span>
+              <span class="m">340-101-MQ · B-322</span>
+            </div>
+            <div class="bloc etude" style="grid-row:22/span 3">
+              <span class="h">18:30 – 20:00</span>
+              <span class="t">Étude — Philo + Écriture</span>
+              <span class="m">Rédaction, pas de lecture passive</span>
+            </div>
+            <div class="bloc admin court" style="grid-row:25/span 1">
+              <span class="h">20:00 – 20:30</span>
+              <span class="t">Admin entreprise</span>
+            </div>
+          </div>
+          <p class="note-jour">Journée la plus chargée : 7,5 h de présence. Aucune création d'entreprise ici — seulement 30 min de courriels et de suivis.</p>
+        </div>
+
+        <!-- MARDI -->
+        <div class="col">
+          <div class="tete">Mardi</div>
+          <div class="piste">
+            <div class="bloc admin court" style="grid-row:1/span 1">
+              <span class="h">08:00 – 08:30</span>
+              <span class="t">Cadrage : la priorité #1</span>
+            </div>
+            <div class="bloc protege" style="grid-row:2/span 5">
+              <span class="h">08:30 – 11:00</span>
+              <span class="t">Entreprise — bloc A</span>
+              <span class="m">La tâche la plus difficile de la semaine. Téléphone en mode avion.</span>
+            </div>
+            <div class="bloc perso court" style="grid-row:7/span 1">
+              <span class="h">11:00 – 11:30</span>
+              <span class="t">Pause — bouger, sortir</span>
+            </div>
+            <div class="bloc protege" style="grid-row:8/span 3">
+              <span class="h">11:30 – 13:00</span>
+              <span class="t">Entreprise — bloc B</span>
+              <span class="m">Production secondaire : contenu, révisions, envois</span>
+            </div>
+            <div class="bloc perso" style="grid-row:11/span 2">
+              <span class="h">13:00 – 14:00</span>
+              <span class="t">Dîner + trajet</span>
+            </div>
+            <div class="bloc cours" style="grid-row:13/span 3">
+              <span class="h">14:00 – 15:30</span>
+              <span class="t">Dynamique des entreprises</span>
+              <span class="m">401-ENT-AG · B-502</span>
+            </div>
+            <div class="bloc cours" style="grid-row:17/span 3">
+              <span class="h">16:00 – 17:30</span>
+              <span class="t">Volley-ball</span>
+              <span class="m">109-295-AG · GYM-1 / GYM-2</span>
+            </div>
+            <div class="bloc etude" style="grid-row:22/span 3">
+              <span class="h">18:30 – 20:00</span>
+              <span class="t">Étude — Économie + Analyse quanti</span>
+              <span class="m">Exercices, pas de relecture de notes</span>
+            </div>
+          </div>
+          <p class="note-jour">Ton meilleur actif : 5 h de matinée libre, d'un coup. C'est la seule plage de la semaine assez longue pour du vrai travail de fond.</p>
+        </div>
+
+        <!-- MERCREDI -->
+        <div class="col">
+          <div class="tete">Mercredi</div>
+          <div class="piste">
+            <div class="bloc cours" style="grid-row:1/span 4">
+              <span class="h">08:00 – 10:00</span>
+              <span class="t">Fondements de l'économie</span>
+              <span class="m">383-FEG-P1 · B-402</span>
+            </div>
+            <div class="bloc etude court" style="grid-row:5/span 1">
+              <span class="h">10:00 – 10:30</span>
+              <span class="t">Notes à chaud — Économie</span>
+            </div>
+            <div class="bloc protege" style="grid-row:6/span 3">
+              <span class="h">10:30 – 12:00</span>
+              <span class="t">Entreprise — développement</span>
+              <span class="m">Prospection, relances, appels. Une action commerciale minimum.</span>
+            </div>
+            <div class="bloc etude" style="grid-row:9/span 3">
+              <span class="h">12:00 – 13:30</span>
+              <span class="t">Dîner + prélecture Philo</span>
+              <span class="m">Arriver au cours avec le texte lu</span>
+            </div>
+            <div class="bloc cours" style="grid-row:12/span 4">
+              <span class="h">13:30 – 15:30</span>
+              <span class="t">Philosophie et rationalité</span>
+              <span class="m">340-101-MQ · B-522</span>
+            </div>
+            <div class="bloc cours" style="grid-row:17/span 3">
+              <span class="h">16:00 – 17:30</span>
+              <span class="t">Analyse quantitative</span>
+              <span class="m">360-223-RE · B-402</span>
+            </div>
+            <div class="bloc etude" style="grid-row:22/span 3">
+              <span class="h">18:30 – 20:00</span>
+              <span class="t">Étude — Analyse quanti + Histoire</span>
+              <span class="m">Devoir de maths tant que c'est frais</span>
+            </div>
+            <div class="bloc admin court" style="grid-row:25/span 1">
+              <span class="h">20:00 – 20:30</span>
+              <span class="t">Admin entreprise</span>
+            </div>
+          </div>
+          <p class="note-jour">Le trou de 3 h 30 va au développement, pas à la production : c'est le seul moment de la semaine où les clients répondent au téléphone.</p>
+        </div>
+
+        <!-- JEUDI -->
+        <div class="col">
+          <div class="tete">Jeudi</div>
+          <div class="piste">
+            <div class="bloc cours" style="grid-row:1/span 4">
+              <span class="h">08:00 – 10:00</span>
+              <span class="t">Bloc EXA-300</span>
+              <span class="m">Examen commun · sinon : rattrapage scolaire</span>
+            </div>
+            <div class="bloc protege" style="grid-row:5/span 5">
+              <span class="h">10:00 – 12:30</span>
+              <span class="t">Entreprise — bloc C</span>
+              <span class="m">Production : la pièce livrable de la semaine</span>
+            </div>
+            <div class="bloc perso" style="grid-row:10/span 3">
+              <span class="h">12:30 – 14:00</span>
+              <span class="t">Dîner + trajet</span>
+            </div>
+            <div class="bloc cours" style="grid-row:13/span 4">
+              <span class="h">14:00 – 16:00</span>
+              <span class="t">Écriture et littérature</span>
+              <span class="m">601-101-MQ · A-402</span>
+            </div>
+            <div class="bloc cours" style="grid-row:17/span 3">
+              <span class="h">16:00 – 17:30</span>
+              <span class="t">Histoire du monde</span>
+              <span class="m">330-HXV-AG · B-330</span>
+            </div>
+            <div class="bloc etude" style="grid-row:22/span 2">
+              <span class="h">18:30 – 19:30</span>
+              <span class="t">Rédaction — Écriture</span>
+              <span class="m">Avancer la dissertation le jour même</span>
+            </div>
+          </div>
+          <p class="note-jour">Le bloc EXA-300 est réservé mais souvent vide : quand il n'y a pas d'examen, il absorbe tout ce qui a débordé de la semaine.</p>
+        </div>
+
+        <!-- VENDREDI -->
+        <div class="col">
+          <div class="tete">Vendredi</div>
+          <div class="piste">
+            <div class="bloc cours" style="grid-row:2/span 3">
+              <span class="h">08:30 – 10:00</span>
+              <span class="t">Dynamique des entreprises</span>
+              <span class="m">401-ENT-AG · B-614</span>
+            </div>
+            <div class="bloc etude" style="grid-row:5/span 4">
+              <span class="h">10:00 – 12:00</span>
+              <span class="t">Étude — la grosse tâche</span>
+              <span class="m">Dissertation ou prépa d'examen. Une seule chose.</span>
+            </div>
+            <div class="bloc cours" style="grid-row:9/span 3">
+              <span class="h">12:00 – 13:30</span>
+              <span class="t">Fondements de l'économie</span>
+              <span class="m">383-FEG-P1 · B-510</span>
+            </div>
+            <div class="bloc perso court" style="grid-row:12/span 1">
+              <span class="h">13:30 – 14:00</span>
+              <span class="t">Dîner</span>
+            </div>
+            <div class="bloc protege" style="grid-row:13/span 5">
+              <span class="h">14:00 – 16:30</span>
+              <span class="t">Entreprise — bloc D</span>
+              <span class="m">Finaliser et livrer. Rien ne traîne jusqu'à lundi.</span>
+            </div>
+            <div class="bloc admin" style="grid-row:18/span 2">
+              <span class="h">16:30 – 17:30</span>
+              <span class="t">Revue hebdo</span>
+              <span class="m">Bilan école + entreprise, facturation, plan de la semaine</span>
+            </div>
+          </div>
+          <p class="note-jour">La semaine ferme à 17 h 30. Vendredi soir, samedi après-midi et dimanche soir : rien de planifié, et c'est voulu.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>La fin de semaine</h2>
+    <p class="section-intro">Deux blocs seulement. Le reste est vide — c'est ce qui rend le lundi tenable.</p>
+    <div class="duo">
+      <div class="carte sam">
+        <h3>Samedi</h3>
+        <span class="quand">09:00 – 12:00 · 3 h · Entreprise</span>
+        <p>Le travail qui n'a pas de deadline mais qui décide de l'année : portfolio, site vitrine, prospection froide, apprentissage d'un nouvel outil. Jamais du travail client — le client passe en semaine.</p>
+        <p class="libre">Après midi : <b>rien</b>. C'est le coussin de la semaine — si un examen ou une livraison a débordé, c'est ici que ça se rattrape, pas dans tes soirées.</p>
+      </div>
+      <div class="carte dim">
+        <h3>Dimanche</h3>
+        <span class="quand">14:00 – 16:00 · 2 h · École</span>
+        <p>Révision balayage des cinq cours (pas d'étude en profondeur), puis 20 minutes pour regarder la semaine qui vient : quels travaux tombent quand, et quelle est la priorité #1 de mardi matin.</p>
+        <p class="libre">Le reste du dimanche : <b>fermé aux deux fronts</b>. Aucune exception, sinon la règle s'effondre en trois semaines.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Pourquoi c'est placé là</h2>
+    <div class="pourquoi">
+      <div>
+        <h3 style="color:var(--ecole-texte)">Lundi — journée d'école pure</h3>
+        <p>Quatre cours, 7 h 30 de présence. Tenter du travail créatif là-dedans donne du travail médiocre et une soirée gâchée. On y protège seulement 30 min d'admin pour que rien ne pourrisse.</p>
+      </div>
+      <div>
+        <h3 style="color:var(--biz-texte)">Mardi — la matinée reine</h3>
+        <p>Cinq heures libres consécutives avant le premier cours : c'est la plus longue plage de ta semaine, et elle tombe au moment où ton cerveau est le plus frais. Tout le travail de fond de l'entreprise vit ici.</p>
+      </div>
+      <div>
+        <h3 style="color:var(--biz-texte)">Mercredi — la fenêtre commerciale</h3>
+        <p>10 h 30 à midi, c'est l'heure où les gens d'affaires répondent. On y met les appels, les relances et la prospection — pas de la production, qui peut se faire n'importe quand.</p>
+      </div>
+      <div>
+        <h3 style="color:var(--ecole-texte)">Jeudi — le tampon</h3>
+        <p>Le bloc EXA-300 réservé sert de soupape : semaine normale, c'est du rattrapage scolaire ; semaine d'examen, il est déjà à l'horaire. Ton entreprise n'a jamais à céder sa place à un examen surprise.</p>
+      </div>
+      <div>
+        <h3 style="color:var(--biz-texte)">Vendredi — on livre et on ferme</h3>
+        <p>Deux cours espacés, puis l'après-midi complet. C'est le jour de la livraison client et de la revue hebdo : la semaine se termine par un envoi et un bilan, pas par une liste qui traîne.</p>
+      </div>
+      <div>
+        <h3 style="color:var(--perso-texte)">Le volley reste</h3>
+        <p>1 h 30 le mardi. C'est le seul entraînement structuré de ta semaine et il est déjà payé. Le sacrifier pour « gagner » 90 min est le plus mauvais échange disponible.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Les règles qui font tenir l'horaire</h2>
+    <ul class="regles">
+      <li><b>Un trou de moins de 90 minutes ne sert jamais à l'entreprise.</b> Le temps de démarrage mange tout. Ces fenêtres vont à l'école : lecture, exercices, mise au propre des notes.</li>
+      <li><b>20 minutes de notes à chaud valent 2 heures de révision plus tard.</b> C'est pour ça que le mercredi 10 h et le lundi 15 h 30 existent — refaire les exemples du cours pendant qu'ils sont encore compréhensibles.</li>
+      <li><b>Les blocs laiton pleins sont traités comme des cours.</b> On ne les déplace pas, on ne les raccourcit pas, on n'y répond pas à des messages. Une seule tâche, décidée la veille.</li>
+      <li><b>Dynamique des entreprises est ton cours-laboratoire.</b> Chaque travail, chaque étude de cas se fait sur ta vraie entreprise. Un seul effort compte double.</li>
+      <li><b>La priorité #1 se choisit la veille au soir, pas le matin.</b> Trente secondes le lundi soir t'évitent de brûler la première demi-heure du mardi à décider quoi faire.</li>
+      <li><b>Quand la semaine dérape, c'est le samedi matin qui absorbe.</b> Jamais les soirées, jamais le dimanche, jamais le volley — ce sont eux qui te permettent de recommencer lundi.</li>
+      <li><b>Si tu dois couper, coupe l'admin avant le travail de fond.</b> Deux jours sans répondre aux courriels ne tue personne ; deux semaines sans avancer le projet, oui.</li>
+    </ul>
+  </section>
+
+  <p class="pied">
+    Horaire de cours lu depuis ta capture d'écran Omnivox. Deux blocs restent à confirmer : le début exact des cours du matin (08:00 ou 08:30 selon la journée) et la fin du cours d'Écriture du jeudi. Corrige-les au besoin — le reste de la structure tient pareil.
+  </p>
+
+</div>
+</body>
+</html>
