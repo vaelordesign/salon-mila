@@ -1,0 +1,689 @@
+<title>Paper Trail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#F1F2F5;
+  --card:#FFFFFF;
+  --sunk:#E7E9ED;
+  --ink:#15181E;
+  --slate:#59616F;
+  --faint:#8A93A1;
+  --rule:#D3D7DE;
+  --mark:#A32B2B;
+  --mark-soft:#A32B2B1A;
+  --verified:#2C6A58;
+  --verified-soft:#2C6A581A;
+  --shadow:0 1px 2px #15181E0A, 0 8px 24px #15181E0A;
+
+  --f-display:"Newsreader",ui-serif,Georgia,serif;
+  --f-body:"Public Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --measure:68ch;
+  --s1:.5rem; --s2:.875rem; --s3:1.25rem; --s4:2rem; --s5:3rem; --s6:4.5rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#13161B;
+    --card:#191D24;
+    --sunk:#1F242C;
+    --ink:#E7EAEF;
+    --slate:#98A1AF;
+    --faint:#6C7583;
+    --rule:#2A303A;
+    --mark:#D97570;
+    --mark-soft:#D9757022;
+    --verified:#6BB399;
+    --verified-soft:#6BB39922;
+    --shadow:0 1px 2px #0006, 0 8px 24px #0004;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#13161B;
+  --card:#191D24;
+  --sunk:#1F242C;
+  --ink:#E7EAEF;
+  --slate:#98A1AF;
+  --faint:#6C7583;
+  --rule:#2A303A;
+  --mark:#D97570;
+  --mark-soft:#D9757022;
+  --verified:#6BB399;
+  --verified-soft:#6BB39922;
+  --shadow:0 1px 2px #0006, 0 8px 24px #0004;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:16.5px;
+  line-height:1.65;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
+a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--rule)}
+a:hover{text-decoration-color:var(--mark)}
+:focus-visible{outline:2px solid var(--mark);outline-offset:3px;border-radius:2px}
+
+/* ---------- shell ---------- */
+.shell{max-width:1180px;margin:0 auto;padding:0 var(--s3)}
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:var(--s6);align-items:start}
+@media (max-width:940px){.layout{grid-template-columns:1fr;gap:var(--s4)}}
+
+/* ---------- masthead ---------- */
+.mast{border-bottom:1px solid var(--rule);padding:var(--s5) 0 var(--s4)}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:var(--s3)
+}
+.mast h1{
+  font-family:var(--f-display);font-weight:500;letter-spacing:-.02em;
+  font-size:clamp(2.4rem,6vw,4rem);line-height:1.02;margin-bottom:var(--s3)
+}
+.mast h1 em{font-style:italic;color:var(--mark)}
+.lede{
+  font-family:var(--f-display);font-size:clamp(1.05rem,2vw,1.3rem);
+  line-height:1.5;color:var(--slate);max-width:60ch
+}
+.mast-meta{
+  display:flex;flex-wrap:wrap;gap:var(--s1) var(--s3);margin-top:var(--s4);
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--faint)
+}
+.mast-meta span{display:flex;align-items:center;gap:.5em}
+.mast-meta span::before{content:"";width:5px;height:5px;background:var(--rule);border-radius:50%}
+
+/* ---------- nav rail ---------- */
+.rail{position:sticky;top:var(--s3);padding-top:var(--s5)}
+@media (max-width:940px){
+  .rail{position:static;padding-top:var(--s4);border-bottom:1px solid var(--rule);padding-bottom:var(--s3)}
+  .rail ol{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s3)}
+}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
+.rail a{
+  display:block;font-size:.82rem;color:var(--slate);text-decoration:none;
+  line-height:1.35;transition:color .15s
+}
+.rail a:hover{color:var(--ink)}
+.rail .n{
+  font-family:var(--f-mono);font-size:.66rem;color:var(--faint);
+  margin-right:.6em;letter-spacing:.05em
+}
+
+/* ---------- sections ---------- */
+main{padding-top:var(--s5);padding-bottom:var(--s6)}
+section{margin-bottom:var(--s6);scroll-margin-top:var(--s3)}
+.sec-head{margin-bottom:var(--s4)}
+.sec-num{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mark);display:block;margin-bottom:.7rem
+}
+h2{
+  font-family:var(--f-display);font-weight:500;letter-spacing:-.015em;
+  font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1.15
+}
+h3{
+  font-family:var(--f-body);font-weight:600;font-size:1.02rem;
+  letter-spacing:-.005em;margin:var(--s4) 0 var(--s2)
+}
+p{margin:0 0 var(--s2);max-width:var(--measure)}
+.sec-head p{color:var(--slate);margin-top:var(--s2)}
+strong{font-weight:600}
+ul{margin:0 0 var(--s2);padding-left:1.1rem;max-width:var(--measure)}
+li{margin-bottom:.45rem}
+li::marker{color:var(--faint)}
+
+/* ---------- callout ---------- */
+.note{
+  border-left:2px solid var(--mark);background:var(--mark-soft);
+  padding:var(--s3);margin:var(--s3) 0;max-width:var(--measure);
+  border-radius:0 3px 3px 0
+}
+.note p:last-child{margin-bottom:0}
+.note .tag{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mark);display:block;margin-bottom:.5rem
+}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:var(--s3) 0;border:1px solid var(--rule);border-radius:4px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:520px}
+th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);font-weight:400;
+  background:var(--sunk);white-space:nowrap
+}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+th.num{text-align:right}
+tr.hi td{background:var(--mark-soft)}
+tr.hi td:first-child{font-weight:600}
+.score{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* ---------- concept cards ---------- */
+.veine{margin-top:var(--s4)}
+.veine-head{
+  display:flex;align-items:baseline;gap:var(--s2);
+  padding-bottom:.6rem;border-bottom:1px solid var(--rule);margin-bottom:var(--s3)
+}
+.veine-key{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mark)
+}
+.veine-head h3{margin:0;font-size:1.05rem}
+.cards{display:grid;gap:var(--s2);grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card{
+  background:var(--card);border:1px solid var(--rule);border-radius:4px;
+  padding:var(--s3);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.55rem
+}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.card-id{font-family:var(--f-mono);font-size:.7rem;color:var(--faint)}
+.card h4{font-family:var(--f-body);font-weight:600;font-size:.95rem;line-height:1.35}
+.card .title-en{
+  font-family:var(--f-display);font-style:italic;font-size:.9rem;
+  color:var(--slate);line-height:1.4
+}
+.card .tell{font-size:.83rem;color:var(--slate);line-height:1.5}
+.card .tell b{color:var(--ink);font-weight:600}
+.chip{
+  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;padding:.22em .55em;border-radius:2px;white-space:nowrap
+}
+.chip.ok{background:var(--verified-soft);color:var(--verified)}
+.chip.todo{background:var(--sunk);color:var(--faint)}
+.src{
+  font-family:var(--f-mono);font-size:.68rem;color:var(--faint);
+  word-break:break-all;line-height:1.45;margin-top:auto;padding-top:.5rem;
+  border-top:1px solid var(--rule)
+}
+
+/* ---------- timeline ---------- */
+.tl{list-style:none;margin:var(--s3) 0;padding:0;max-width:var(--measure)}
+.tl li{
+  display:grid;grid-template-columns:88px 1fr;gap:var(--s3);
+  padding:var(--s2) 0;border-top:1px solid var(--rule);margin:0
+}
+.tl li:last-child{border-bottom:1px solid var(--rule)}
+.tl .when{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--mark);padding-top:.2rem
+}
+.tl .what b{display:block;font-weight:600;margin-bottom:.15rem}
+.tl .what span{font-size:.88rem;color:var(--slate)}
+@media (max-width:520px){.tl li{grid-template-columns:1fr;gap:.3rem}}
+
+/* ---------- checklist ---------- */
+.check{list-style:none;padding:0;max-width:var(--measure)}
+.check li{
+  padding-left:1.6rem;position:relative;font-size:.92rem;margin-bottom:.5rem
+}
+.check li::before{
+  content:"";position:absolute;left:0;top:.45em;width:.7rem;height:.7rem;
+  border:1px solid var(--slate);border-radius:2px
+}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:1px solid var(--rule);padding:var(--s4) 0 var(--s5);
+  font-size:.85rem;color:var(--slate)
+}
+footer p{max-width:var(--measure)}
+code{
+  font-family:var(--f-mono);font-size:.85em;background:var(--sunk);
+  padding:.12em .38em;border-radius:2px
+}
+</style>
+
+<div class="shell">
+
+  <header class="mast">
+    <div class="eyebrow">Changement de niche · chaîne YouTube</div>
+    <h1>L'anatomie<br>d'une <em>arnaque</em></h1>
+    <p class="lede">Des documentaires narrés de 12 à 18 minutes qui reconstituent une escroquerie financière réelle du point de vue de la victime — et se terminent par « le signal » : le moment précis où ça pouvait encore être arrêté.</p>
+    <div class="mast-meta">
+      <span>Anglais · marché global</span>
+      <span>Sans visage · narration ElevenLabs</span>
+      <span>1 long-format + 3 Shorts par semaine</span>
+      <span>30 concepts sourcés</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="rail" aria-label="Sections">
+      <ol>
+        <li><a href="#pourquoi"><span class="n">01</span>Pourquoi cette niche</a></li>
+        <li><a href="#audience"><span class="n">02</span>L'audience réelle</a></li>
+        <li><a href="#format"><span class="n">03</span>Le format</a></li>
+        <li><a href="#concepts"><span class="n">04</span>Les 30 concepts</a></li>
+        <li><a href="#calendrier"><span class="n">05</span>90 jours</a></li>
+        <li><a href="#garde-fous"><span class="n">06</span>Garde-fous</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+      <!-- 01 -->
+      <section id="pourquoi">
+        <div class="sec-head">
+          <span class="sec-num">01 — Le choix</span>
+          <h2>Pourquoi celle-là gagne</h2>
+          <p>Le moteur narratif est <strong>l'ironie dramatique</strong> : le spectateur comprend le piège avant la victime. C'est le mécanisme de rétention le plus puissant accessible à un narrateur sans visage, il ne coûte rien à produire et ne dépend d'aucune archive vidéo.</p>
+        </div>
+
+        <div class="tw">
+          <table>
+            <caption class="visually-hidden"></caption>
+            <thead>
+              <tr>
+                <th scope="col">Niche</th>
+                <th scope="col" class="num">Relatable</th>
+                <th scope="col" class="num">Emotional</th>
+                <th scope="col" class="num">Completion</th>
+                <th scope="col" class="num">RPM</th>
+                <th scope="col">Saturation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hi">
+                <td>Anatomie d'une arnaque</td>
+                <td class="num score">10</td><td class="num score">9</td><td class="num score">10</td>
+                <td class="num">12–30 $</td><td>Moyenne</td>
+              </tr>
+              <tr>
+                <td>Histoires Reddit / revanche</td>
+                <td class="num score">10</td><td class="num score">10</td><td class="num score">10</td>
+                <td class="num">4–8 $</td><td>Extrême</td>
+              </tr>
+              <tr>
+                <td>Récits de survie</td>
+                <td class="num score">9</td><td class="num score">9</td><td class="num score">10</td>
+                <td class="num">5–12 $</td><td>Très forte</td>
+              </tr>
+              <tr>
+                <td>True crime classique</td>
+                <td class="num score">8</td><td class="num score">9</td><td class="num score">10</td>
+                <td class="num">4–8 $</td><td>Extrême</td>
+              </tr>
+              <tr>
+                <td>Effondrements d'entreprise</td>
+                <td class="num score">6</td><td class="num score">7</td><td class="num score">8</td>
+                <td class="num">14–35 $</td><td>Forte</td>
+              </tr>
+              <tr>
+                <td>Origine des objets du quotidien</td>
+                <td class="num score">10</td><td class="num score">4</td><td class="num score">6</td>
+                <td class="num">6–12 $</td><td>Moyenne</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>C'est la seule ligne haute sur les trois axes <strong>à la fois</strong>, dans la bande de RPM supérieure, sans saturation extrême.</p>
+
+        <h3>Les trois axes, en détail</h3>
+        <ul>
+          <li><strong>Universally relatable — 10.</strong> Il ne faut pas aimer la finance pour regarder quelqu'un se faire vider son compte. Il suffit d'avoir un compte.</li>
+          <li><strong>Emotional hook — 9.</strong> Effroi (<em>ça pourrait être moi</em>), indignation (<em>qui fait ça à une personne de 78 ans</em>), ironie dramatique (<em>ne réponds pas</em>). Le cold open peut être un vrai texto affiché à l'écran.</li>
+          <li><strong>Completion compulsion — 10.</strong> Trois boucles étagées qui ne se referment pas au même moment, plus un contrat de rétention explicite : « le signal » n'est payé qu'à la fin.</li>
+        </ul>
+
+        <h3>Les deux avantages hors radar</h3>
+        <p><strong>Le revenu.</strong> Le true crime plafonne à 4–8 $ de RPM. En cadrant le récit sur la fraude financière, on va chercher les annonceurs de la bande 18–45 $ — banques, assurances, cybersécurité, juridique — tout en racontant du drame de qualité true-crime. Cette combinaison est rare.</p>
+        <p><strong>Ton avantage réel.</strong> Tu fais du démarchage et tu construis des sites. Tu sais lire une page d'atterrissage d'arnaque en professionnel : la crédibilité fabriquée, le tunnel, l'urgence, le faux avis. C'est un point de vue que personne ne peut copier au gabarit.</p>
+
+        <div class="note">
+          <span class="tag">Écarté délibérément</span>
+          <p><strong>Les histoires Reddit notent pourtant 10/10/10.</strong> Mais c'est le format le plus templatisable qui existe, le contenu n'est pas le tien, et c'est l'archétype exact de ce que YouTube supprime : en janvier 2026, 16 chaînes totalisant 35 M d'abonnés et 4,7 milliards de vues ont été terminées sous la politique de contenu inauthentique. Marquer 30/30 et se faire démonétiser à six mois n'est pas un succès.</p>
+        </div>
+      </section>
+
+      <!-- 02 -->
+      <section id="audience">
+        <div class="sec-head">
+          <span class="sec-num">02 — Ciblage</span>
+          <h2>L'audience réelle de YouTube</h2>
+          <p>Une croyance répandue veut que les 10–16 ans soient le plus gros groupe. Ce n'est pas ce que disent les chiffres, et agir dessus coûterait très cher.</p>
+        </div>
+
+        <div class="tw">
+          <table>
+            <thead>
+              <tr><th scope="col">Tranche d'âge</th><th scope="col" class="num">Part de l'audience mondiale</th></tr>
+            </thead>
+            <tbody>
+              <tr class="hi"><td>25–34 ans</td><td class="num score">21,7 %</td></tr>
+              <tr><td>35–44 ans</td><td class="num score">18,5 %</td></tr>
+              <tr><td>18–24 ans</td><td class="num score">15,8 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Les 18–44 ans représentent environ 56 % de l'audience totale. La confusion vient d'une statistique réelle mais mal lue : 92 % des adolescents américains utilisent YouTube — c'est un taux de <strong>pénétration</strong>, pas une <strong>part d'audience</strong>.</p>
+
+        <div class="note">
+          <span class="tag">Ce que coûterait le ciblage enfants</span>
+          <p>Viser explicitement les moins de 13 ans fait basculer la chaîne en « contenu conçu pour les enfants ». Le RPM tombe alors de 10–40 $ à <strong>1–3 $</strong> — les annonces personnalisées sont désactivées, il ne reste que du contextuel. Et surtout, <strong>commentaires, écrans de fin, fiches, cloche de notification et adhésions sont désactivés</strong> : tous les mécanismes de croissance de la chaîne. Ce serait la décision la plus destructrice disponible.</p>
+        </div>
+
+        <h3>Ce qu'on retient quand même</h3>
+        <p><strong>La discipline de rythme.</strong> Ce qui retient un jeune de 14 ans retient aussi un adulte de 34 ans ; l'inverse est faux. On adopte donc le standard le plus exigeant — aucune intro, aucun temps mort de plus de 3 secondes, une information nouvelle toutes les 8 à 12 secondes. C'est une règle de <strong>fabrication</strong>, pas de <strong>ciblage</strong>.</p>
+        <p><strong>Le pont vers les 18–24 ans</strong> se fait par le contenu : une veine assumée de vidéos où les victimes sont jeunes — faux stage, recrutement en mule financière par Discord, arnaques dans les jeux. Sujet réel et documenté : les moins de 29 ans ont perdu 500 M$ en 2025, soit 20 % de plus qu'en 2021.</p>
+      </section>
+
+      <!-- 03 -->
+      <section id="format">
+        <div class="sec-head">
+          <span class="sec-num">03 — Exécution</span>
+          <h2>L'anatomie d'une vidéo</h2>
+          <p>Six blocs. La durée de chacun est indicative ; l'ordre ne l'est pas.</p>
+        </div>
+
+        <ul class="tl">
+          <li>
+            <span class="when">0:00–0:25</span>
+            <span class="what"><b>Cold open</b><span>On ouvre au moment de la perte maximale, pas au début de l'histoire. La première phrase contient un chiffre et une date. Aucune intro, aucun logo.</span></span>
+          </li>
+          <li>
+            <span class="when">0:25–0:40</span>
+            <span class="what"><b>Le contrat</b><span>« Il y a eu un moment, un seul, où cette histoire pouvait s'arrêter. Il arrive à la neuvième minute. » La promesse est tenue, sinon la rétention de la vidéo suivante s'effondre.</span></span>
+          </li>
+          <li>
+            <span class="when">0:40–3:00</span>
+            <span class="what"><b>Le rembobinage</b><span>Retour au premier contact. À partir d'ici, le spectateur en sait plus que la victime — l'ironie dramatique commence à travailler.</span></span>
+          </li>
+          <li>
+            <span class="when">3:00–9:00</span>
+            <span class="what"><b>La montée</b><span>Chaque étape est un document à l'écran. On sème les signaux sans les commenter : le spectateur les voit, la victime non.</span></span>
+          </li>
+          <li>
+            <span class="when">9:00–14:00</span>
+            <span class="what"><b>La bascule</b><span>Le moment où l'argent ne revient pas, puis l'enquête et la peine. Ne jamais inventer une fin heureuse — beaucoup de dossiers finissent sans récupération.</span></span>
+          </li>
+          <li>
+            <span class="when">14:00–fin</span>
+            <span class="what"><b>Le signal</b><span>Le paiement de la promesse. Formulé comme une observation sur ce qui s'est passé, jamais comme un conseil.</span></span>
+          </li>
+        </ul>
+
+        <h3>Les trois boucles</h3>
+        <div class="tw">
+          <table>
+            <thead><tr><th scope="col">Boucle</th><th scope="col">Posée</th><th scope="col">Refermée</th></tr></thead>
+            <tbody>
+              <tr><td>Est-ce qu'elle perd tout ?</td><td>Cold open</td><td>≈ minute 9</td></tr>
+              <tr><td>Qui était vraiment au bout du fil ?</td><td>Minute 3</td><td>≈ minute 12</td></tr>
+              <tr><td>Est-ce qu'ils ont été attrapés ?</td><td>Minute 6</td><td>Fin</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Quand une boucle se referme, la suivante est déjà ouverte. Il n'y a jamais de point où le spectateur a toutes ses réponses avant la fin.</p>
+
+        <h3>L'identité visuelle : le mur d'enquête</h3>
+        <p>Pas de banque d'images, pas de dramatisations générées par IA. Uniquement du <strong>document</strong> : captures de messages, pièces judiciaires, relevés reconstitués, snapshots archive.org du site mort, Street View de l'adresse déclarée. Ken Burns lent, surlignage progressif, un seul accent rouge réservé au signal.</p>
+        <p>C'est le rare cas où le style le moins cher à produire en solo est <strong>aussi</strong> le plus différenciant <strong>et</strong> la preuve d'originalité exigée par la politique de monétisation.</p>
+      </section>
+
+      <!-- 04 -->
+      <section id="concepts">
+        <div class="sec-head">
+          <span class="sec-num">04 — Matière première</span>
+          <h2>Les 30 concepts</h2>
+          <p>Chacun est adossé à une source primaire. <strong>Un concept sans source vérifiable a été retiré, pas gardé pour faire nombre</strong> — et la règle a déjà servi. Dix portent la mention « vérifié » : document ouvert, chiffres confirmés.</p>
+        </div>
+
+        <div class="veine">
+          <div class="veine-head"><span class="veine-key">Veine A</span><h3>Les grandes chutes</h3></div>
+          <div class="cards">
+            <article class="card">
+              <div class="card-top"><span class="card-id">01</span><span class="chip ok">Vérifié</span></div>
+              <h4>Le directeur de banque qui a coulé sa propre banque</h4>
+              <p class="title-en">He Sent $47 Million to a Stranger. He Ran the Bank.</p>
+              <p class="tell">Shan Hanes, PDG de la Heartland Tri-State Bank : 11 virements, 47,1 M$, la banque fait faillite. 293 mois. <b>Le signal : le deuxième virement</b> — le premier pouvait passer pour une erreur, à partir du deuxième il dissimule.</p>
+              <p class="src">justice.gov/usao-ks/pr/former-ceo-failed-bank-sentenced-prison</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">02</span><span class="chip todo">À localiser</span></div>
+              <h4>73 millions, huit complices, des plateformes qui n'existaient pas</h4>
+              <p class="title-en">The Trading Platform Was Fake. So Was Everything Else.</p>
+              <p class="tell">Daren Li et huit complices, domaines imités, 73,6 M$. <b>Le signal : le domaine</b>, presque celui de la plateforme légitime.</p>
+              <p class="src">DOJ · Central District of California</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">03</span><span class="chip ok">Vérifié</span></div>
+              <h4>Le blanchisseur de San Gabriel</h4>
+              <p class="title-en">The Man Who Moved the Money</p>
+              <p class="tell">Fei Liao, 40 mois, 2,8 M$ de dédommagement. <b>Le signal : les comptes</b> sont ouverts au nom de sociétés créées quelques semaines plus tôt, sans activité.</p>
+              <p class="src">justice.gov/usao-edtx/pr/chinese-national-sentenced-role-pig-butchering-scheme</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">04</span><span class="chip todo">À localiser</span></div>
+              <h4>Celle qui croyait aider</h4>
+              <p class="title-en">She Was the Victim. Then She Was the Defendant.</p>
+              <p class="tell">Victime d'arnaque sentimentale recrutée comme intermédiaire, puis inculpée. <b>Le signal : la première demande</b> de recevoir de l'argent d'un tiers sur son compte.</p>
+              <p class="src">IRS-CI · district du Colorado</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="veine">
+          <div class="veine-head"><span class="veine-key">Veine B</span><h3>L'appel qui vide le compte</h3></div>
+          <div class="cards">
+            <article class="card">
+              <div class="card-top"><span class="card-id">09</span><span class="chip ok">Vérifié</span></div>
+              <h4>Cinq condamnations, huit millions, dix États</h4>
+              <p class="title-en">The Job Was Picking Up Packages</p>
+              <p class="tell">Faux support technique reposant sur des lingots d'or, au moins 8 M$ dans dix États. <b>Le signal : le coursier local</b>, recruté par petite annonce, payé au ramassage.</p>
+              <p class="src">justice.gov/usao-edmo/pr/five-sentenced-helping-overseas-scammers-defraud-elderly-victims</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">10</span><span class="chip ok">Vérifié</span></div>
+              <h4>« Mamie, c'est moi, j'ai eu un accident »</h4>
+              <p class="title-en">The Grandson on the Phone Wasn't Her Grandson</p>
+              <p class="tell">John Tyler Pla (37 mois) et Johnny Lee Palmer (33 mois), Tampa. <b>Le signal : l'appel demande le secret</b> — « ne dis rien à papa ». Aucune urgence réelle n'exige le silence.</p>
+              <p class="src">justice.gov/usao-ndoh/pr/two-florida-men-sentenced-running-grandparent-scam-northern-ohio</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">12</span><span class="chip ok">Vérifié</span></div>
+              <h4>Dix millions, sept mille cinq cents victimes</h4>
+              <p class="title-en">The Pop-Up That Wouldn't Close</p>
+              <p class="tell">Romana Leyva, 100 mois. <b>Le signal : la fenêtre surgissante ne peut pas se fermer.</b> Un vrai avertissement se ferme toujours.</p>
+              <p class="src">justice.gov/usao-sdny/pr/las-vegas-woman-sentenced-prison-10-million-tech-support-fraud-scheme-exploited-elderly</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">08</span><span class="chip todo">À localiser</span></div>
+              <h4>Le coursier qui ramassait des lingots</h4>
+              <p class="title-en">They Told Her Cash Wasn't Safe. So She Bought Gold.</p>
+              <p class="tell">Syed M. Makki, 15 ans et demi, 9,3 M$ encaissés à l'étranger. <b>Le signal : convertir l'épargne en or.</b> Aucune agence ne demande ça, jamais.</p>
+              <p class="src">DOJ · audience de mai 2026</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="veine">
+          <div class="veine-head"><span class="veine-key">Veine C</span><h3>L'argent qui disparaît au virement</h3></div>
+          <div class="cards">
+            <article class="card">
+              <div class="card-top"><span class="card-id">18</span><span class="chip ok">Vérifié</span></div>
+              <h4>Il a facturé deux géants de la tech. Ils ont payé 120 millions.</h4>
+              <p class="title-en">They Invoiced Two Tech Giants. Both Paid.</p>
+              <p class="tell">Rimasauskas immatricule en Lettonie une société portant <em>le même nom</em> qu'un fournisseur asiatique réel. 60 mois. <b>Le signal : le compte est en Lettonie et à Chypre</b> alors que le fournisseur est en Asie. Le nom était juste — c'est la destination qui ne l'était pas.</p>
+              <p class="src">justice.gov/usao-sdny/pr/lithuanian-man-sentenced-5-years-prison-theft-over-120-million-fraudulent-business</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">19</span><span class="chip ok">Vérifié</span></div>
+              <h4>Le lien piégé qui détourne un achat immobilier</h4>
+              <p class="title-en">She Wired Her Down Payment to a Stranger</p>
+              <p class="tell">Dossier <em>Ayeni</em> (22-cr-00253-TFM) : maliciel, puis courriel imité de la société de titres avec de nouvelles instructions. <b>Le signal : de nouvelles instructions de virement par courriel</b> — personne n'a rappelé à un numéro connu.</p>
+              <p class="src">justice.gov/elderjustice · annexe A · dossier PACER 22-cr-00253-TFM</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">21</span><span class="chip todo">À localiser</span></div>
+              <h4>Pourquoi ils demandent toujours un virement</h4>
+              <p class="title-en">Why Scammers Always Ask for a Wire</p>
+              <p class="tell">12,5 milliards de pertes déclarées en 2023. <b>Le signal : le virement est irréversible</b>, contrairement à la carte. Ce n'est pas une préférence, c'est le cœur du dispositif.</p>
+              <p class="src">Rapport annuel FBI IC3</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="veine">
+          <div class="veine-head"><span class="veine-key">Veine E</span><h3>Le deuxième vol</h3></div>
+          <div class="cards">
+            <article class="card">
+              <div class="card-top"><span class="card-id">26</span><span class="chip ok">Vérifié</span></div>
+              <h4>Le cabinet d'avocats qui n'existait pas</h4>
+              <p class="title-en">The Lawyer Recovering Her Stolen Crypto Was the Thief</p>
+              <p class="tell">Alerte FBI I-081325-PSA. Plus de 9,9 M$ de pertes <em>supplémentaires</em> chez des victimes déjà escroquées. <b>Le signal : ils connaissent les montants et les dates exacts</b> des virements précédents — parce qu'ils ont acheté la liste.</p>
+              <p class="src">fbi.gov/investigate/cyber/alerts/2025 · ic3.gov/PSA/2025/PSA250813 · ic3.gov/PSA/2024/PSA240624</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">27</span><span class="chip todo">À localiser</span></div>
+              <h4>Comment on achète une liste de victimes</h4>
+              <p class="title-en">Your Name Is on a List</p>
+              <p class="tell">L'économie souterraine des listes : nom, coordonnées, nature de l'arnaque, montant perdu. <b>Le signal : le premier appel mentionne un détail</b> que seul un escroc pouvait connaître.</p>
+              <p class="src">consumer.ftc.gov · cftc.gov/LearnAndProtect</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="veine">
+          <div class="veine-head"><span class="veine-key">Veine F</span><h3>Les jeunes victimes — le pont vers les 18–24 ans</h3></div>
+          <div class="cards">
+            <article class="card">
+              <div class="card-top"><span class="card-id">28</span><span class="chip ok">Vérifié</span></div>
+              <h4>L'étudiant devenu mule financière</h4>
+              <p class="title-en">The Internship That Made Him a Criminal</p>
+              <p class="tell">Un faux employeur demande de recevoir puis retransférer des fonds. <b>Le signal : l'emploi consiste à faire transiter de l'argent</b> sur son compte personnel. Aucun emploi légitime ne fonctionne comme ça.</p>
+              <p class="src">justice.gov/elderjustice · annexe A · cftc.gov/PressRoom 8908-24</p>
+            </article>
+            <article class="card">
+              <div class="card-top"><span class="card-id">30</span><span class="chip todo">À localiser</span></div>
+              <h4>Le texto qui promet un emploi</h4>
+              <p class="title-en">That Job Text Is a Scam. Here's the Math.</p>
+              <p class="tell">Pertes passées de 90 M$ à 501 M$ entre 2020 et 2024. <b>Le signal : on demande de payer</b> pour débloquer des gains déjà « accumulés ».</p>
+              <p class="src">consumer.ftc.gov/consumer-alerts/2026/04 · ftc.gov/exploredata</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="note">
+          <span class="tag">Concept retiré</span>
+          <p>Une affaire de virement immobilier détourné dans l'Indiana circulait dans plusieurs recensions secondaires, mais <strong>aucune source primaire n'a pu être localisée</strong>. Retirée conformément à la règle. Le sujet — trop bon pour être perdu — est repris au concept 19 sur le dossier <em>Ayeni</em>, qui, lui, porte un numéro de dossier.</p>
+        </div>
+
+        <h3>Ordre de publication</h3>
+        <div class="tw">
+          <table>
+            <thead><tr><th scope="col" class="num">Rang</th><th scope="col">Vidéo</th><th scope="col">Raison</th></tr></thead>
+            <tbody>
+              <tr><td class="num score">1</td><td>#01 — le directeur de banque</td><td>Le mieux documenté <strong>et</strong> la thèse de la chaîne. Une chaîne vide n'a rien à protéger : on ouvre sur la plus forte.</td></tr>
+              <tr><td class="num score">2</td><td>#18 — les deux géants de la tech</td><td>Achève de démonter l'argument « je n'aurais jamais cru ça ».</td></tr>
+              <tr><td class="num score">3</td><td>#26 — le faux cabinet d'avocats</td><td>Structure narrative la plus surprenante.</td></tr>
+              <tr><td class="num score">4</td><td>#10 — le faux petit-fils</td><td>Maximum d'émotion, source vérifiée, montage léger.</td></tr>
+              <tr><td class="num score">5</td><td>#19 — la mise de fonds</td><td>La peur la plus universelle. Demande un tirage PACER.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Ensuite, <strong>alterner les veines</strong> : jamais deux vidéos de la même veine à la suite.</p>
+      </section>
+
+      <!-- 05 -->
+      <section id="calendrier">
+        <div class="sec-head">
+          <span class="sec-num">05 — Calendrier</span>
+          <h2>90 jours</h2>
+          <p>Une chaîne gardée des années sans publier n'a qu'un seul risque réel, et ce n'est pas le choix de niche : <strong>c'est que la planification remplace la publication</strong>. Le calendrier est construit à l'envers de l'instinct habituel.</p>
+        </div>
+
+        <ul class="tl">
+          <li>
+            <span class="when">Semaine 0</span>
+            <span class="what"><b>Remise à neuf du compte</b><span>Une heure. Identifiant, nom, bannière, absence d'avertissement, et surtout : confirmer que le réglage « conçu pour les enfants » est sur non.</span></span>
+          </li>
+          <li>
+            <span class="when">Sem. 1–2</span>
+            <span class="what"><b>La vidéo pilote</b><span>Vidéo #01, choisie parce qu'elle est la mieux documentée du lot. <strong>Publication le jour 14, quelle que soit la satisfaction ressentie.</strong></span></span>
+          </li>
+          <li>
+            <span class="when">Sem. 3–6</span>
+            <span class="what"><b>Trouver le format</b><span>Une vidéo par semaine. On corrige une variable à la fois : le cold open, puis la miniature, puis le rythme, puis la tenue du contrat.</span></span>
+          </li>
+          <li>
+            <span class="when">Sem. 7–10</span>
+            <span class="what"><b>Construire l'avance</b><span>Fabrication par lots. Objectif : deux vidéos en réserve. C'est la seule protection contre la semaine chargée en clients.</span></span>
+          </li>
+          <li>
+            <span class="when">Sem. 11–13</span>
+            <span class="what"><b>Lecture des résultats</b><span>Publication maintenue. Une seule analyse, en fin de semaine 13, sur les 12 vidéos.</span></span>
+          </li>
+        </ul>
+
+        <h3>Les critères, écrits d'avance</h3>
+        <p>Ils sont fixés maintenant pour qu'on ne puisse pas se raconter d'histoires après coup. Après 12 vidéos, on cherche les trois :</p>
+        <div class="tw">
+          <table>
+            <thead><tr><th scope="col">Indicateur</th><th scope="col" class="num">Seuil</th></tr></thead>
+            <tbody>
+              <tr><td>Au moins une vidéo</td><td class="num score">&gt; 10 000 vues</td></tr>
+              <tr><td>Durée de visionnement moyenne</td><td class="num score">&gt; 50 %</td></tr>
+              <tr><td>CTR</td><td class="num score">&gt; 4 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">
+          <span class="tag">Règle absolue</span>
+          <p><strong>On ne change pas de niche avant 20 vidéos.</strong> Douze ne suffisent pas à distinguer une mauvaise niche d'un format encore vert. Changer à ce stade, c'est recommencer la courbe d'apprentissage à zéro — et c'est exactement le mécanisme qui fait qu'une chaîne reste vide pendant des années. Ce qui se corrige à 12 vidéos : le cold open, la miniature, le titre, le rythme. Pas le sujet.</p>
+        </div>
+      </section>
+
+      <!-- 06 -->
+      <section id="garde-fous">
+        <div class="sec-head">
+          <span class="sec-num">06 — Conformité</span>
+          <h2>Les garde-fous</h2>
+          <p>Une chaîne qui raconte des crimes financiers réels, en nommant des gens, avec une voix synthétique, se tient sur trois lignes de faille à la fois. Chacune est gérable — aucune ne se gère par improvisation.</p>
+        </div>
+
+        <h3>La narration synthétique, sous trois conditions</h3>
+        <p>La politique ne vise pas la voix de synthèse. Elle vise les <strong>personas IA qui se présentent comme des experts délivrant des conseils</strong> sur un sujet sensible. Un narrateur documentaire qui rapporte des faits sourcés à des pièces judiciaires n'est pas cette chose-là.</p>
+        <ul>
+          <li><strong>Pas de persona.</strong> Le narrateur n'a ni nom, ni visage, ni biographie. C'est une voix de documentaire, pas un personnage.</li>
+          <li><strong>Raconter, jamais conseiller.</strong> « Personne n'a rappelé le notaire à un numéro connu », et non « vérifiez toujours par téléphone ». La nuance a l'air cosmétique ; elle est exactement la ligne que trace la politique.</li>
+          <li><strong>L'originalité vit dans le script.</strong> Ce qui protège la chaîne, c'est la recherche en sources primaires — pas le fait qu'un humain lise le texte.</li>
+        </ul>
+
+        <h3>Diffamation</h3>
+        <p>On ne nomme que ce qu'affirme un document judiciaire public ou un communiqué gouvernemental. Une personne inculpée mais non jugée n'est nommée qu'avec « accusé de » ; une personne citée sans être poursuivie n'est pas nommée du tout, même si la presse l'a fait. <strong>Jamais de personne non condamnée dans un titre ou une miniature</strong> — le titre est ce qui circule hors contexte.</p>
+
+        <h3>Dignité des victimes</h3>
+        <p>Anonymisation par défaut. Le sujet de la chaîne est <strong>la mécanique du piège</strong>, pas la naïveté des gens — c'est aussi ce qui préserve l'identification qui fait fonctionner le format. Le test : est-ce que la personne concernée, si elle voyait la vidéo, se sentirait décrite avec justesse ?</p>
+
+        <h3>Avant chaque publication</h3>
+        <ul class="check">
+          <li>Chaque fait du script pointe vers une ligne sourcée du fichier de recherche</li>
+          <li>Aucune personne non condamnée nommée dans le titre ou la miniature</li>
+          <li>Statut judiciaire vérifié sur le dossier le plus récent, pas le plus visible</li>
+          <li>Victimes anonymisées, sauf expression publique de leur part</li>
+          <li>Recherche <code>you should</code> / <code>make sure</code> / <code>always</code> : zéro occurrence</li>
+          <li>Mention de narration synthétique et sources en clair dans la description</li>
+          <li>Réglage « conçu pour les enfants » sur <strong>non</strong></li>
+        </ul>
+      </section>
+
+      <footer>
+        <p><strong>Réserves à lever.</strong> La disponibilité de l'identifiant <code>@</code> et l'antériorité de marque sur <em>Paper Trail</em> restent à vérifier — se faire renommer de force après 40 vidéos coûte tout le référencement accumulé. Et les sources marquées « à localiser » sont des affaires confirmées par des recensions concordantes, dont l'URL exacte du communiqué reste à retrouver avant scénarisation.</p>
+        <p>Documents complets : <code>chaine-youtube/</code> sur la branche <code>claude/youtube-niche-change-pw0xb4</code>.</p>
+      </footer>
+
+    </main>
+  </div>
+</div>
