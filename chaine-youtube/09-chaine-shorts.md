@@ -1,5 +1,13 @@
 # Chaîne YouTube Shorts — LA niche (v2, 26 août 2026)
 
+> **Mise à jour du même jour (v3)** : Julien élargit le concept — pas un seul raton,
+> mais une **anthologie de petites histoires avec plein d'animaux différents**, en
+> anglais. Nom de chaîne : **Critter Diaries** (`@CritterDiaries`). Chaque animal
+> est une série (Randy le raton = série 1, EP01 déjà produit — voir
+> `randy-the-raccoon/ep01-evicted.md`). Avatar de chaîne : mascotte Randy à la GoPro
+> (job Higgsfield `954cb97a-b4b2-4592-997b-03335416028d`). Le reste de ce document
+> (format, pipeline, budget par Short) reste valable tel quel.
+
 Première proposition (« anatomie d'une arnaque » en Shorts) refusée par Julien le jour même.
 Ses trois critères : (1) la meilleure niche en vues brutes, (2) un sujet qu'il comprend
 même si Claude gère la production, (3) un contenu sur lequel on tombe naturellement
