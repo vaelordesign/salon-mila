@@ -1,84 +1,88 @@
-# Chaîne YouTube Shorts — stratégie de niche (26 août 2026)
+# Chaîne YouTube Shorts — LA niche (v2, 26 août 2026)
 
-Demande de Julien : une niche Shorts qui peut faire beaucoup de vues, produite avec
-Higgsfield. Contrainte posée le même jour : **les crédits Higgsfield sont la ressource
-rare** (~1200 crédits au moment d'écrire, plan Plus). La niche doit donc maximiser
-les vues PAR CRÉDIT, pas juste les vues.
+Première proposition (« anatomie d'une arnaque » en Shorts) refusée par Julien le jour même.
+Ses trois critères : (1) la meilleure niche en vues brutes, (2) un sujet qu'il comprend
+même si Claude gère la production, (3) un contenu sur lequel on tombe naturellement
+dans le feed. Contrainte inchangée : les crédits Higgsfield sont la ressource rare.
 
-## Recommandation : « Anatomie d'une arnaque » en format Shorts
+## La niche : le vlog d'une créature IA (personnage récurrent)
 
-Réutiliser la niche déjà validée pour la chaîne longue (voir `00-niche.md`) en version
-45–60 secondes : **une vraie arnaque racontée par Short, en 3 actes, en français.**
+**Un animal/créature ultra-réaliste qui vlogue sa vie comme un influenceur**, caméra
+selfie/GoPro à la patte. C'est LE format IA le plus poussé par les feeds depuis
+mi-2025 (la vague « Bigfoot/gorille vlogueur », partie d'un TikTok Veo 3 en juin 2025,
+devenue une catégorie à part entière en 2026) et il coche les trois critères :
 
-Pourquoi c'est le meilleur choix :
+1. **Vues brutes / feed** : format natif du feed — 8 à 20 secondes, hook visuel
+   immédiat (une créature qui te parle face caméra), taux de complétion et de repartage
+   énormes. C'est exactement le contenu que Shorts/TikTok distribuent à froid à des
+   gens qui ne sont abonnés à rien.
+2. **Sujet compréhensible en une phrase** : « un animal qui se filme comme un
+   youtubeur ». Julien peut juger chaque épisode en 10 secondes, proposer des idées,
+   valider les blagues — aucune recherche à comprendre.
+3. **Un PERSONNAGE, pas des clips jetables** : contrairement à l'ASMR ou aux clips
+   satisfaisants, un personnage récurrent construit des abonnés, des blagues
+   récurrentes, une marque — la chaîne a une identité et survit aux modes.
 
-1. **La recherche est déjà faite.** L'EP01 (Shan Hanes / Heartland Tri-State) a déjà un
-   dossier complet (`production/ep01/`), avec un `shorts.md` — les premiers Shorts
-   sortent quasiment gratuitement du travail existant.
-2. **True crime financier = rétention élevée** sur Shorts : une histoire avec une chute
-   (« il a coulé sa propre banque »), pas un fait divers générique. C'est le format qui
-   se termine — et le taux de complétion est LE signal de l'algorithme Shorts.
-3. **Peu concurrentiel en français.** Le true crime classique est saturé; l'anatomie
-   d'arnaques (pig butchering, fraude bancaire, Ponzi locaux) l'est beaucoup moins,
-   surtout en français (Québec + France + Afrique francophone = grand bassin).
-4. **Économe en crédits** (voir budget plus bas) : ce format vit très bien avec des
-   images fixes cinématiques + 2-3 plans vidéo courts, pas besoin de 60 s de vidéo IA.
-5. **Synergie totale** : les Shorts deviennent l'entonnoir de la future chaîne longue
-   (même identité, `02-identite.md`), chaque Short pointe vers l'épisode complet.
+Bonus production : le style selfie/GoPro **pardonne les imperfections de l'IA**
+(caméra qui bouge, gros plan, flou de mouvement) — c'est le format le moins risqué
+en vidéo générée.
 
-### Format type (45–60 s)
+### Le personnage (proposition, à valider par Julien)
 
-- **0–3 s — hook** (la fin d'abord) : « Cet homme a volé 47 millions… à sa propre banque. »
-- **3–40 s — mécanique** : comment l'arnaque fonctionne, étape par étape (c'est la
-  valeur de la chaîne : on explique le MÉCANISME, pas juste le drame).
-- **40–55 s — chute + leçon** : ce qui l'a trahi / comment ne pas se faire avoir.
-- **CTA** : « L'histoire complète sur la chaîne. »
+Un **raton laveur québécois** qui vit sa vie de raton comme un vlogueur lifestyle :
+il « déménage » dans une poubelle neuve, teste la poutine trouvée dans une ruelle,
+survit à l'hiver, se plaint du déneigement. Différenciation forte : la vague
+Bigfoot/gorille est anglophone; un animal iconique + humour québécois = zéro
+concurrence directe dans le feed francophone, et le personnage est doublable en
+anglais plus tard (outil `dubbing` de Higgsfield) pour une chaîne miroir EN si ça marche.
 
-### Pipeline de production Higgsfield (budget par Short)
+Alternatives de personnage si le raton ne plaît pas : un orignal, un castor, un
+Bigfoot des Laurentides. Le principe reste identique.
 
-| Poste | Outil | Quantité | Coût estimé |
-|---|---|---|---|
-| Visuels cinématiques (9:16) | `generate_image_batch` (Soul/Recraft, ~1–1,5 crédit/image) | 8–10 images | ~10–15 crédits |
-| Plans vidéo d'accroche | `generate_video` image-to-video, 5 s (générer UNE fois, hook seulement) | 1–2 clips | ~20–40 crédits |
-| Narration française | `generate_audio` (TTS) ou la voix de Julien (0 crédit) | 60 s | 0–5 crédits |
-| Montage (Ken Burns sur images, sous-titres, mix) | `sandbox_exec` (ffmpeg, GRATUIT) | 1 | 0 crédit |
+### Format type (8–20 s — plus court = moins cher ET mieux distribué)
 
-**≈ 30–60 crédits par Short** → 20 à 40 Shorts avec le solde actuel. En mode
-images-seules (zéro clip vidéo), ~15 crédits/Short → 80 Shorts possibles.
+- 0–2 s : face caméra, phrase d'accroche (« Aujourd'hui je déménage. »)
+- 2–15 s : 1 à 2 plans de la « mission », narration continue du personnage
+- fin : chute sèche (pas de CTA parlé — la boucle doit repartir sans friction)
 
-Règles d'économie :
-- Le montage, les sous-titres, le format 9:16, la concat : TOUJOURS ffmpeg dans le
-  sandbox (gratuit), jamais regénérer.
-- Une image ratée se recadre/réutilise (`reframe`, `outpaint_image`) avant de regénérer.
-- Les clips vidéo IA seulement pour le hook (les 3 premières secondes décident de tout);
-  le reste en images + mouvement de caméra ffmpeg.
-- `virality_predictor` sur le montage AVANT publication (analyse, pas de génération) —
-  on itère sur le hook tant que le score de rétention est faible.
+### Pipeline Higgsfield (budget par Short)
 
-### Cadence et objectifs
+| Poste | Outil | Coût estimé |
+|---|---|---|
+| Référence personnage (UNE fois, réutilisée partout) | `generate_image` + workflow character-sheet | ~10 crédits une seule fois |
+| 1–2 clips vidéo 5 s, 9:16, style selfie | `generate_video` (image-to-video depuis la référence) | ~30–60 crédits |
+| Voix du personnage (français) | `generate_audio` TTS (ou voix de Julien pitchée, 0 crédit) | 0–5 crédits |
+| Montage, sous-titres, boucle, mix | `sandbox_exec` / ffmpeg | 0 crédit |
 
-- **3 Shorts/semaine** (lun-mer-ven), ~90–180 crédits/semaine.
-- 30 premiers jours = calibration : on regarde le taux de complétion par variante de hook.
-- Seuil de validation à 90 jours : des Shorts qui dépassent régulièrement 10 000 vues
-  et un taux de complétion > 70 %. Ensuite seulement, lancer la chaîne longue (EP01 déjà prêt).
+**≈ 35–65 crédits par Short** → 18 à 30 Shorts avec le solde actuel (~1200 crédits).
+Règles d'économie : jamais plus de 2 générations vidéo par Short; un clip raté se
+sauve au montage avant de regénérer; `virality_predictor` (gratuit en crédits de
+génération) sur chaque montage avant publication pour itérer le hook.
 
-### Premiers épisodes (recherche déjà disponible ou rapide)
+### Cadence et validation
 
-1. Shan Hanes — le PDG qui a coulé sa banque (3 Shorts tirés de `production/ep01/`)
-2. Le « pig butchering » expliqué en 60 s (l'arnaque crypto la plus rentable au monde)
-3. L'arnaque du faux conseiller bancaire (épidémie au Québec, très recherché)
-4. Ponzi québécois classiques (Earl Jones) — fort ancrage local, peu couvert en Shorts
-5. Les faux placements « garantis » sur Facebook Marketplace
+- 1 personnage, **3 Shorts/semaine**, publiés Shorts + TikTok (outil `tiktok_publish`
+  déjà connecté) — double distribution pour le même coût de production.
+- Ce qui se mesure : complétion > 90 % (format court), repartages, et si un épisode
+  sur-performe → décliner immédiatement en série (l'algorithme adore les suites).
+- Décision à 20 Shorts (~6 semaines) : on garde, on ajuste le personnage, ou on pivote.
 
-### Alternatives considérées (et pourquoi non)
+### Niche secondaire (machine à vues d'appoint, si Julien veut tester)
 
-- **POV immersion historique** (« POV : tu es un paysan en 1350 ») : très viral, parfait
-  pour Higgsfield, mais 100 % vidéo IA → 150–400 crédits/Short. Trop cher comme niche
-  principale; possible en test ponctuel si un Short arnaque sur-performe.
-- **Mini-docs luxe/fortunes perdues** : bon CPM, mais concurrence anglophone écrasante
-  et pas de synergie avec le travail déjà fait.
+**ASMR IA « fruits de verre »** (découpe d'objets impossibles) : zéro langue, zéro
+personnage, le contenu feed le plus pur — mais jetable, sans abonnés fidèles, et
+dépendant d'une mode. 1 clip de 5–8 s en boucle ≈ 20–40 crédits. À utiliser comme
+test A/B de distribution, pas comme chaîne principale.
 
-## Prochaine étape concrète
+### Pourquoi pas les niches « rentables » des listicles
 
-Produire le Short pilote #1 (Shan Hanes, hook A vs hook B en 2 variantes de montage,
-mêmes images) : ~40 crédits au total, et on a de quoi juger le format avant d'industrialiser.
+Les listes 2026 poussent finance/make-money (RPM élevé) : c'est de la rentabilité par
+vue, pas des vues — l'inverse du brief de Julien, et des sujets qu'il ne veut pas
+gérer. Le RPM se réglera plus tard (le levier réel d'une chaîne personnage : marque,
+sponsors, produits dérivés).
+
+## Prochaine étape
+
+Créer la fiche personnage du raton (≈10 crédits) + le Short pilote #1
+(« Je déménage ») ≈ 50 crédits au total. Julien valide le personnage sur la fiche
+AVANT toute génération vidéo.
