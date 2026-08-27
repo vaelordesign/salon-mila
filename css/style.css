@@ -295,3 +295,15 @@ h1 em,h2 em{font-style:italic;color:var(--argile)}
   .pied-conteneur{flex-direction:column;align-items:flex-start}
   .pied-coord{text-align:left}
 }
+
+/* ---------- Bande photo pleine largeur ----------
+   Une respiration entre le contenu et le contact. La hauteur est fixee en vh
+   plafonnee en px : sans le plafond, la bande devore l'ecran d'un portable
+   pose a l'horizontale. object-fit: cover garde le cadrage sur tout ecran. */
+.bande-photo{ position: relative; height: clamp(220px, 42vh, 420px); overflow: hidden; }
+.bande-photo img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.bande-photo::after{ content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.16), rgba(0,0,0,0) 38%, rgba(0,0,0,.14)); }
+@media (max-width: 860px){
+  .bande-photo{ height: clamp(180px, 34vh, 260px); }
+}
