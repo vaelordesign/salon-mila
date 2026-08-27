@@ -30,7 +30,12 @@
 
   var cfg = window.VAELOR_DEMO || {};
   var ENTREPRISE = cfg.entreprise || 'votre entreprise';
-  var COURRIEL   = 'charlesmartel2506@gmail.com';
+  var COURRIEL   = 'charles.martel@vaelordesign.com';
+  /* Adresse de secours affichée sous la principale. Le domaine vaelordesign.com
+     n'a reçu ses enregistrements MX que le 26 août 2026 : tant qu'un doute
+     subsiste sur la réception, un prospect doit toujours avoir une deuxième
+     porte d'entrée qui, elle, fonctionne à coup sûr. */
+  var COURRIEL_SECOURS = 'charlesmartel2506@gmail.com';
   var TEL        = '514 833-1429';
   var TEL_BRUT   = '+15148331429';
   var SITE       = 'https://vaelordesign.com/';
@@ -128,7 +133,7 @@
       'body{padding-bottom:56px!important}' +
       /* Le panneau « on en parle ». Il remplace l'ancien lien mailto:, qui ne
          faisait RIEN sur un ordinateur sans logiciel de courriel configuré
-         (constaté le 19 août 2026 — le seul appel a l'action de la barre etait mort). */
+         (constaté le 24 août 2026 — le seul appel a l'action de la barre etait mort). */
       '.vd-panneau{position:fixed;inset:0;z-index:2147483001;display:grid;place-items:center;' +
       'background:rgba(6,6,14,.74);padding:20px;font-family:Inter,Segoe UI,system-ui,sans-serif}' +
       '.vd-carte{background:#0E0E1A;color:#F4F3FF;max-width:420px;width:100%;border-radius:16px;' +
@@ -144,7 +149,9 @@
       '.vd-copier{cursor:pointer;background:none;border:1px solid rgba(255,255,255,.2);color:#12D8C5;' +
       'border-radius:8px;padding:6px 10px;font:inherit;font-size:.8rem}' +
       '.vd-fermer{margin-top:18px;background:none;border:0;color:#7F7CA0;font:inherit;' +
-      'font-size:.85rem;cursor:pointer;text-decoration:underline}';
+      'font-size:.85rem;cursor:pointer;text-decoration:underline}' +
+      '.vd-secours{margin:10px 0 0!important;color:#7F7CA0!important;font-size:.8rem!important}' +
+      '.vd-secours a{color:#B7B4D4;text-decoration:underline}';
     document.head.appendChild(st);
 
     var bar = document.createElement('div');
@@ -195,6 +202,8 @@
       'Écrire depuis mon application courriel</a>' +
       '<div class="vd-adr"><code>' + echapper(COURRIEL) + '</code>' +
       '<button class="vd-copier" type="button">copier</button></div>' +
+      '<p class="vd-secours">ou <a href="mailto:' + COURRIEL_SECOURS + '?subject=' + sujet + '">' +
+      echapper(COURRIEL_SECOURS) + '</a></p>' +
       '<button class="vd-fermer" type="button">Fermer</button></div>';
     document.body.appendChild(pan);
 
